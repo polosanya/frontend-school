@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { coursesFromServer } from './api/mockData';
 import './App.css';
+import CoursesList from './components/CoursesList/CoursesList';
+// import { coursesApi } from './api/api';
+import axios from "axios";
+import { Course } from './types/Course';
+import { baseUrl, token } from './api/api';
 
-function App() {
+const App: React.FC = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    axios.get(baseUrl, {
+      headers: {"Authorization" : `Bearer ${token}`},
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch(error => console.log(error))
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Frontend School</h1>
+
+      {/* <CoursesList courses={coursesFromServer}/> */}
     </div>
   );
 }
