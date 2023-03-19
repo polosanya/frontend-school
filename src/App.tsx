@@ -52,7 +52,7 @@ const App: React.FC = () => {
             />
             <Route
               path=":courseId"
-              element={<CoursePage courses={courses} token={token} />}
+              element={<CoursePage token={token} />}
             />
           </Route>
           <Route path="*" element={<h1 className="title">Page not found</h1>} />
