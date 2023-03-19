@@ -1,5 +1,7 @@
 @import url(./components/CoursesList/CoursesList.scss);
 @import url(./components/CourseCard/CourseCard.scss);
+@import url(./pages/CoursePage/CoursePage.scss);
+@import url(./components/LessonsList/LessonsList.scss);
 
 body {
   margin: 0;
@@ -8,6 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F2F2F7;
 }
 
 code {
