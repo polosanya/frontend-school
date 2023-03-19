@@ -12,8 +12,6 @@ type Props = {
 const CourseCard: React.FC<Props> = ({ course }) => {
   const navigate = useNavigate();
 
-  console.log(course.meta?.courseVideoPreview?.link);
-
   return (
     <div
       className="CourseCard"

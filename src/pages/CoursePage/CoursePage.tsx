@@ -8,11 +8,10 @@ import LessonsList from "../../components/LessonsList/LessonsList";
 import { Course } from "../../types/Course";
 
 type Props = {
-  courses: Course[];
   token: string;
 };
 
-const CoursePage: React.FC<Props> = ({ courses, token }) => {
+const CoursePage: React.FC<Props> = ({ token }) => {
   const { courseId } = useParams();
   const [course, setCourse] = useState<Course>();
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +53,7 @@ const CoursePage: React.FC<Props> = ({ courses, token }) => {
 
           <p>Lessons:</p>
 
-          {course?.lessons && <LessonsList lessons={course.lessons} />}
+          {course?.lessons && <LessonsList lessons={course.lessons} course={course}/>}
         </>
       )}
     </div>
