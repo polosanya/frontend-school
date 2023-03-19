@@ -1,7 +1,3 @@
-// export const baseToken =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MzYwNWM2NC1jZGZhLTRiZjYtYmNjOC00MWFmZGRjNjYxMWYiLCJwbGF0Zm9ybSI6InN1YnNjcmlwdGlvbnMiLCJpYXQiOjE2NzkwMTc2NjUsImV4cCI6MTY3OTkxNzY2NX0.h1kv63fklSibt9oTAdDFC4ANsFZy0Lr1ZZQY3jIl_c0";
-
-
 export const coursesFromServer = [
     {
         "id": "352be3c6-848b-4c19-9e7d-54fe68fef183",

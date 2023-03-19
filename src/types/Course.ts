@@ -6,6 +6,7 @@ export interface Course {
     title: string;
     tags?: string[];
     launchDate: string;
+    lessonsCount: number;
     status: string; //can be type
     description: string;
     duration: number; // hours?

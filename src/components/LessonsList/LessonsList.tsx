@@ -4,7 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LockIcon from '@mui/icons-material/Lock';
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import { Lesson } from "../../types/Lesson";
 
@@ -13,8 +13,13 @@ type Props = {
 };
 
 const LessonsList: React.FC<Props> = ({ lessons }) => {
+  const preparedLessons = useMemo(() => (
+    [...lessons]
+      .sort((a, b) => a.order - b.order)
+  ), [lessons]); // sort lessons in correct order 
+
   const [expanded, setExpanded] = useState<string | false>(
-    lessons[0].title
+    preparedLessons[0].title
   );
 
   const handleChange =
@@ -23,9 +28,8 @@ const LessonsList: React.FC<Props> = ({ lessons }) => {
     };
 
   return (
-    <div>
-      {[...lessons]
-      .sort((a, b) => a.order - b.order) // sort lessons in correct order 
+    <div className="LessonsList">
+      {preparedLessons
       .map((lesson) => (
         <Accordion
           disabled={lesson.status === "locked"}
@@ -39,14 +43,9 @@ const LessonsList: React.FC<Props> = ({ lessons }) => {
                 ? <LockIcon />
                 : <ExpandMoreIcon />
             }
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
           >
-            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+            <Typography sx={{ width: "100%" }}>
               {`${lesson.order}. ${lesson.title}`}
-            </Typography>
-            <Typography sx={{ color: "text.secondary" }}>
-              {lesson.type}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>

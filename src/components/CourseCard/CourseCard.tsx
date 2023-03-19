@@ -1,40 +1,54 @@
-import React from 'react';
-import { Course } from '../../types/Course';
-import { Link } from "react-router-dom";
-import Rating from '@mui/material/Rating';
+import React from "react";
+import { Course } from "../../types/Course";
+import { useNavigate } from "react-router-dom";
+import Rating from "@mui/material/Rating";
+import HoverVideoPlayer from "react-hover-video-player";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type Props = {
   course: Course;
 };
 
 const CourseCard: React.FC<Props> = ({ course }) => {
-  return (
-    <div className='CourseCard'>
-      <h3>
-        {course.title}
-      </h3>
+  const navigate = useNavigate();
 
-      <img 
-        className='CourseCard__image'
-        src={course.previewImageLink +'/cover.webp'} 
-        alt={course.title}
-        onError={({ currentTarget }) => {
-            currentTarget.onerror = null; // prevents looping
-            currentTarget.src="https://cdn-icons-png.flaticon.com/512/4762/4762311.png";
-          }}
+  console.log(course.meta?.courseVideoPreview?.link);
+
+  return (
+    <div
+      className="CourseCard"
+      onClick={() => {
+        navigate(`/courses/${course.id}`);
+      }}
+    >
+      <h3>{course.title}</h3>
+
+      <HoverVideoPlayer
+        videoSrc={course.meta?.courseVideoPreview?.link}
+        pausedOverlay={
+          <img
+            src={course.previewImageLink + "/cover.webp"}
+            alt="Course preview"
+            className="CourseCard__image"
+          />
+        }
+        loadingOverlay={
+          <div className="CourseCard__loader">
+            <CircularProgress />
+          </div>
+        }
       />
 
       <p>
-        Duration: {Math.floor(course.duration / 60)} minutes 
+        Lessons: {course.lessonsCount} ({Math.floor(course.duration / 60)}{" "}
+        minutes)
       </p>
 
       <Rating value={course.rating} readOnly precision={0.5} />
 
       <p>{course.meta?.skills?.at(0)}</p>
-
-      <Link to={`/courses/${course.id}`}>Open Course</Link>
     </div>
   );
-}
+};
 
 export default CourseCard;

@@ -24,7 +24,9 @@ const Courses: React.FC<Props> = ({ courses, isLoading }) => {
   return (
     <div className="Courses">
       {isLoading ? (
-        <CircularProgress />
+        <div className="Courses__loader">
+          <CircularProgress />
+        </div>
       ) : (
         <>
           <Pagination

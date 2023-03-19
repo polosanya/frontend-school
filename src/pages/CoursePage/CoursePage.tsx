@@ -1,10 +1,11 @@
+import { Chip, Stack } from "@mui/material";
+import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { coursesApi } from "../../api/api";
 import LessonsList from "../../components/LessonsList/LessonsList";
 import { Course } from "../../types/Course";
-import "./CoursePage.scss";
 
 type Props = {
   courses: Course[];
@@ -15,6 +16,7 @@ const CoursePage: React.FC<Props> = ({ courses, token }) => {
   const { courseId } = useParams();
   const [course, setCourse] = useState<Course>();
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (courseId) {
@@ -25,25 +27,31 @@ const CoursePage: React.FC<Props> = ({ courses, token }) => {
 
           setCourse(currentCourse);
         })
-        .catch((error) => console.log(error))
+        .catch((error) => setError(error.message))
         .finally(() => setIsLoading(false));
     }
   }, [courseId, token]);
 
   return (
-    <div>
+    <div className="CoursePage">
+      {error && <Alert severity="error">{error}</Alert>}
+
       {isLoading ? (
-        <CircularProgress />
+        <div className="CoursePage__loader">
+          <CircularProgress />
+        </div>
       ) : (
         <>
           <h2>{course?.title}</h2>
 
           <p>{course?.description}</p>
 
-          {/* <video width="320" height="240" controls>
-            <source src={firstLesson?.link} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video> */}
+          <Stack direction="row" spacing={1} className="CoursePage__skills">
+            {course?.meta?.skills?.map((skill) => (
+              <Chip key={skill} label={skill}/>
+            ))}
+          </Stack>
+
           <p>Lessons:</p>
 
           {course?.lessons && <LessonsList lessons={course.lessons} />}
