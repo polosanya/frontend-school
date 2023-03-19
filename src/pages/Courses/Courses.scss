@@ -2,7 +2,9 @@
     text-align: center;
     
     &__pagination {
-      display: flex;
-      justify-content: center;
+      margin: 0 auto;
+      background-color: white;
+      width: fit-content;
+      border-radius: 10px;
     }
   }

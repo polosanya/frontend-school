@@ -25,7 +25,7 @@ const CourseCard: React.FC<Props> = ({ course }) => {
       />
 
       <p>
-        Duration: {course.duration} minutes 
+        Duration: {Math.floor(course.duration / 60)} minutes 
       </p>
 
       <Rating value={course.rating} readOnly precision={0.5} />

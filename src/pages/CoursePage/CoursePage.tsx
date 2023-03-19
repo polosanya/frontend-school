@@ -1,60 +1,52 @@
-import axios from "axios";
-import "./CoursePage.scss";
-import React, { useEffect, useMemo, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { baseUrl, token } from "../../api/api";
+import { coursesApi } from "../../api/api";
+import LessonsList from "../../components/LessonsList/LessonsList";
 import { Course } from "../../types/Course";
+import "./CoursePage.scss";
 
 type Props = {
   courses: Course[];
+  token: string;
 };
 
-const CoursePage: React.FC<Props> = ({ courses }) => {
+const CoursePage: React.FC<Props> = ({ courses, token }) => {
   const { courseId } = useParams();
   const [course, setCourse] = useState<Course>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`${baseUrl}/${courseId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        const currentCourse = response.data;
+    if (courseId) {
+      coursesApi
+        .getCourse(token, courseId)
+        .then((response) => {
+          const currentCourse = response.data;
 
-        setCourse(currentCourse);
-      })
-      .catch((error) => console.log(error))
-  }, []);
-
-  const firstLesson = course?.lessons?.at(0);
-  
-  console.log(firstLesson);
+          setCourse(currentCourse);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => setIsLoading(false));
+    }
+  }, [courseId, token]);
 
   return (
     <div>
-      {!course || !firstLesson ? (
-        <h2>NOT FOUND</h2>
+      {isLoading ? (
+        <CircularProgress />
       ) : (
         <>
-          <h2>{course.title}</h2>
+          <h2>{course?.title}</h2>
 
-          <p>{course.description}</p>
+          <p>{course?.description}</p>
 
-          <h3>{firstLesson?.title}</h3>
-
-          <img className="Lesson__image" src={`${firstLesson?.previewImageLink}/lesson-${firstLesson?.order}.webp`} alt="lesson" />
-
-
-          <video width="320" height="240" controls>
+          {/* <video width="320" height="240" controls>
             <source src={firstLesson?.link} type="video/mp4" />
             Your browser does not support the video tag.
-          </video>
+          </video> */}
+          <p>Lessons:</p>
 
-          {/* <ul>
-                {currentCourse.lessons?.map(lesson => (
-                    <video src={`${lesson.previewImageLink}/lesson-${lesson.order}.webp.`}></video>
-                ))}
-              </ul> */}
+          {course?.lessons && <LessonsList lessons={course.lessons} />}
         </>
       )}
     </div>
